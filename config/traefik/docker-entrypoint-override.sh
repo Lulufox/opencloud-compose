@@ -1,4 +1,5 @@
-set -e
+#!/bin/sh
+set -o errexit
 
 printenv
 # Function to add arguments to the command
