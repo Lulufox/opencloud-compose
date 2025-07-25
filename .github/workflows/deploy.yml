@@ -24,7 +24,7 @@ jobs:
           docker ps -aq | xargs -r docker rm
           set -e
 
-    - name: Create projects directory
+    - name: Create projects directories
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.HOST }}
@@ -36,8 +36,25 @@ jobs:
           sudo mkdir -p opencloud-compose
           sudo chown -R ${{ secrets.USER }}:${{ secrets.USER }} opencloud-compose
           sudo chmod -R 755 opencloud-compose
+
+          sudo rm -rf tmp || true
+          sudo mkdir -p tmp
+          sudo chown -R ${{ secrets.USER }}:${{ secrets.USER }} tmp
+          sudo chmod -R 755 tmp
     
-    - name: Copy project files
+    - name: Copy project
+      run:
+        set -e
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SSH_KEY }}" > ~/.ssh/deploy_key
+        chmod 600 ~/.ssh/deploy_key
+
+        tar -czf /tmp/project.tar.gz .
+        scp -o StrictHostKeyChecking=no \
+             -i ~/.ssh/deploy_key \
+             /tmp/project.tar.gz ${{ secrets.USER }}@${{ secrets.HOST }}:/tmp/project.tar.gz
+
+    - name: Unpack project
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.HOST }}
@@ -45,27 +62,8 @@ jobs:
         key: ${{ secrets.SSH_KEY }}
         script: |
             set -e
-            # Установка rsync если его нет
-            if ! command -v rsync &> /dev/null; then
-            sudo apt-get update -qq && sudo apt-get install -y -qq rsync
-            fi
-            
-            # Создаем временный архив
-            tar -czf /tmp/project.tar.gz .
-            
-            # Копируем архив на сервер
-            scp -o StrictHostKeyChecking=no -i ${{ secrets.SSH_KEY }} /tmp/project.tar.gz ${{ secrets.USER }}@${{ secrets.HOST }}:/tmp/project.tar.gz
-            
-            # Распаковываем архив на сервере
-            ssh -o StrictHostKeyChecking=no -i ${{ secrets.SSH_KEY }} ${{ secrets.USER }}@${{ secrets.HOST }} "
             sudo tar -xzf /tmp/project.tar.gz -C opencloud-compose/
             sudo rm /tmp/project.tar.gz
-            sudo chown -R ${{ secrets.USER }}:${{ secrets.USER }} opencloud-compose
-            sudo chmod -R 755 opencloud-compose
-            "
-            
-            # Удаляем локальный архив
-            # rm /tmp/project.tar.gz
 
   deploy:
     runs-on: ubuntu-latest
