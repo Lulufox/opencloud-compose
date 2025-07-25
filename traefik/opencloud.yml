@@ -6,8 +6,8 @@ services:
       - "traefik.http.routers.opencloud.entrypoints=https"
       - "traefik.http.routers.opencloud.rule=Host(`${OC_DOMAIN:-cloud.opencloud.test}`)"
       - "traefik.http.routers.opencloud.service=opencloud"
+      - "traefik.http.routers.opencloud.tls.certresolver=letsencrypt"
       - "traefik.http.services.opencloud.loadbalancer.server.port=9200"
-      - "traefik.http.routers.opencloud.${TRAEFIK_SERVICES_TLS_CONFIG}"
   traefik:
     image: traefik:v3.5.0
     # release notes: https://github.com/traefik/traefik/releases
@@ -37,8 +37,8 @@ services:
       - "traefik.http.routers.traefik.entrypoints=https"
       - "traefik.http.routers.traefik.rule=Host(`${TRAEFIK_DOMAIN:-traefik.opencloud.test}`)"
       - "traefik.http.routers.traefik.middlewares=traefik-auth"
-      - "traefik.http.routers.traefik.${TRAEFIK_SERVICES_TLS_CONFIG}"
       - "traefik.http.routers.traefik.service=api@internal"
+      - "traefik.http.routers.traefik.tls.certresolver=letsencrypt"
     logging:
       driver: ${LOG_DRIVER:-local}
     restart: always
