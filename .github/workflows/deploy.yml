@@ -52,7 +52,7 @@ jobs:
         
         scp -o StrictHostKeyChecking=no \
             -i ~/.ssh/deploy_key \
-            -r ./* \
+            -r . \
             ${{ secrets.USER }}@${{ secrets.HOST }}:/home/${{ secrets.USER }}/opencloud-compose
 
   deploy:
