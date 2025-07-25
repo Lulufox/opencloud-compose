@@ -12,6 +12,8 @@ jobs:
     name: Prepare infra on server
     runs-on: ubuntu-latest
     steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
     - name: Stop and delete all containers
       uses: appleboy/ssh-action@master
       with:
@@ -52,7 +54,7 @@ jobs:
         
         scp -v -o StrictHostKeyChecking=no \
             -i ~/.ssh/deploy_key \
-            -r ./* \
+            -r . \
             ${{ secrets.USER }}@${{ secrets.HOST }}:/home/${{ secrets.USER }}/opencloud-compose
 
   deploy:
