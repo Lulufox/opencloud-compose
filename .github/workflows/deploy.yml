@@ -63,7 +63,7 @@ jobs:
         set -e
         tar -czf /tmp/project.tar.gz .
         scp /tmp/project.tar.gz deploy-server:/tmp/project.tar.gz
-        rm -f /tmp/project.tar.gz
+        # rm -f /tmp/project.tar.gz
 
     - name: Unpack project
       uses: appleboy/ssh-action@master
@@ -74,7 +74,7 @@ jobs:
         script: |
             set -e
             sudo tar -xzf /tmp/project.tar.gz -C opencloud-compose/
-            sudo rm /tmp/project.tar.gz
+            # sudo rm /tmp/project.tar.gz
 
   deploy:
     runs-on: ubuntu-latest
