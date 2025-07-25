@@ -50,9 +50,9 @@ jobs:
         echo "${{ secrets.SSH_KEY }}" > ~/.ssh/deploy_key
         chmod 600 ~/.ssh/deploy_key
         
-        scp -o StrictHostKeyChecking=no \
+        scp -v -o StrictHostKeyChecking=no \
             -i ~/.ssh/deploy_key \
-            -r . \
+            -r ./* \
             ${{ secrets.USER }}@${{ secrets.HOST }}:/home/${{ secrets.USER }}/opencloud-compose
 
   deploy:
