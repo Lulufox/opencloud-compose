@@ -73,7 +73,8 @@ jobs:
         script: |
           set -e
           cd opencloud-compose
-          docker compose -f docker-compose.yml -f weboffice/collabora.yml -f traefik/opencloud.yml -f traefik/collabora.yml up -d
+          docker compose -f docker-compose.yml -f weboffice/collabora.yml \
+            -f traefik/opencloud.yml -f traefik/collabora.yml up -d
 
     - name: Get container status
       id: get_status
