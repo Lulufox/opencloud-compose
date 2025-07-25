@@ -45,6 +45,7 @@ jobs:
     - name: Prepare SSH key
       shell: bash
       run: |
+        set -e
         mkdir -p ~/.ssh
         echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
@@ -59,6 +60,7 @@ jobs:
     - name: Copy project files
       shell: bash
       run: |
+        set -e
         tar -czf /tmp/project.tar.gz .
         scp /tmp/project.tar.gz deploy-server:/tmp/project.tar.gz
         rm -f /tmp/project.tar.gz
