@@ -42,17 +42,26 @@ jobs:
           sudo chown -R ${{ secrets.USER }}:${{ secrets.USER }} tmp
           sudo chmod -R 755 tmp
     
-    - name: Copy project
-      run:
-        set -e
+    - name: Prepare SSH key
+      shell: bash
+      run: |
         mkdir -p ~/.ssh
-        echo "${{ secrets.SSH_KEY }}" > ~/.ssh/deploy_key
-        chmod 600 ~/.ssh/deploy_key
+        echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        cat <<EOF > ~/.ssh/config
+        Host deploy-server
+            HostName ${{ secrets.HOST }}
+            User ${{ secrets.USER }}
+            IdentityFile ~/.ssh/id_rsa
+            StrictHostKeyChecking no
+        EOF
 
+    - name: Copy project files
+      shell: bash
+      run: |
         tar -czf /tmp/project.tar.gz .
-        scp -o StrictHostKeyChecking=no \
-             -i ~/.ssh/deploy_key \
-             /tmp/project.tar.gz ${{ secrets.USER }}@${{ secrets.HOST }}:/tmp/project.tar.gz
+        scp /tmp/project.tar.gz deploy-server:/tmp/project.tar.gz
+        rm -f /tmp/project.tar.gz
 
     - name: Unpack project
       uses: appleboy/ssh-action@master
