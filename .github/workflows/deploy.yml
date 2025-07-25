@@ -19,9 +19,11 @@ jobs:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USER }}
         key: ${{ secrets.SSH_KEY }}
-        script:
-            docker stop $(docker ps -a -q)
-            docker rm $(docker ps -a -q)
+        script: |
+            set +e  # Разрешаем ошибки, так как контейнеров может не быть
+            docker stop $(docker ps -aq) || true
+            docker rm $(docker ps -aq) || true
+            set -e  # Возвращаем строгую проверку ошибок
 
     - name: Create projects directory
       uses: appleboy/ssh-action@master
