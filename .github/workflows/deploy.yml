@@ -12,7 +12,6 @@ jobs:
     name: Prepare infra on server
     runs-on: ubuntu-latest
     steps:
-
     - name: Stop and delete all containers
       uses: appleboy/ssh-action@master
       with:
@@ -20,10 +19,10 @@ jobs:
         username: ${{ secrets.USER }}
         key: ${{ secrets.SSH_KEY }}
         script: |
-            set +e  # Разрешаем ошибки, так как контейнеров может не быть
-            docker stop $(docker ps -aq) || true
-            docker rm $(docker ps -aq) || true
-            set -e  # Возвращаем строгую проверку ошибок
+          set +e
+          docker ps -aq | xargs -r docker stop
+          docker ps -aq | xargs -r docker rm
+          set -e
 
     - name: Create projects directory
       uses: appleboy/ssh-action@master
@@ -35,37 +34,18 @@ jobs:
           set -e
           sudo rm -rf openclou-compose || true
           sudo mkdir -p openclou-compose
-          sudo chown -R 1000:1000 openclou-compose
+          sudo chown -R ${{ secrets.USER }}:${{ secrets.USER }} openclou-compose
           sudo chmod -R 755 openclou-compose
     
     - name: Copy project files
-      uses: appleboy/ssh-action@master
+      uses: appleboy/scp-action@master
       with:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USER }}
         key: ${{ secrets.SSH_KEY }}
-        script: |
-            set -e
-            # Установка rsync, если его нет
-            if ! command -v rsync &> /dev/null; then
-                sudo apt-get update -qq && sudo apt-get install -y -qq rsync
-            fi
-            # Создаем временный архив
-            tar -czf /tmp/project.tar.gz .
-            
-            # Копируем архив на сервер
-            scp -o StrictHostKeyChecking=no -i ${{ secrets.SSH_KEY }} /tmp/project.tar.gz ${{ secrets.USER }}@${{ secrets.HOST }}:/tmp/project.tar.gz
-            
-            # Распаковываем архив на сервере
-            ssh -o StrictHostKeyChecking=no -i ${{ secrets.SSH_KEY }} ${{ secrets.USER }}@${{ secrets.HOST }} "
-                sudo tar -xzf /tmp/project.tar.gz -C openclou-compose/
-                sudo rm /tmp/project.tar.gz
-                sudo chown -R 1000:1000 openclou-compose
-                sudo chmod -R 755 openclou-compose
-            "
-            
-            # Удаляем локальный архив
-            rm /tmp/project.tar.gz
+        source: "."
+        target: "openclou-compose"
+        rm: true
 
   deploy:
     runs-on: ubuntu-latest
@@ -77,31 +57,27 @@ jobs:
     - name: Deploy containers
       uses: appleboy/ssh-action@master
       with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USER }}
-          key: ${{ secrets.SSH_KEY }}
-          script: |
-            set -e
-            cd opencloud-compose
-            
-            docker compose -f docker-compose.yml -f weboffice/collabora.yml -f traefik/opencloud.yml -f traefik/collabora.yml up -d
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USER }}
+        key: ${{ secrets.SSH_KEY }}
+        script: |
+          set -e
+          cd openclou-compose
+          docker compose -f docker-compose.yml -f weboffice/collabora.yml -f traefik/opencloud.yml -f traefik/collabora.yml up -d
 
     - name: Get container status
       id: get_status
       run: |
-        sleep 15s
+        sleep 15
         mkdir -p ~/.ssh
-        echo "${{ secrets.SSH_KEY }}" > ~/.ssh/deploy_key
+        echo "${{ secrets.SSH_KEY }}" | tr -d '\r' > ~/.ssh/deploy_key
         chmod 600 ~/.ssh/deploy_key
         status=$(ssh -o StrictHostKeyChecking=no \
-        -i ~/.ssh/deploy_key \
-        ${{ secrets.USER }}@${{ secrets.HOST }} \
-        "sudo docker ps -a --format 'table {{.ID}}\t{{.Names}}\t{{.Status}}\t{{.Ports}}'")
-        
-        # Format the output with proper line breaks
-        formatted_status=$(echo "$status" | awk 'NR>1 {print $0}' | sed 's/%0A/\n/g')
+          -i ~/.ssh/deploy_key \
+          ${{ secrets.USER }}@${{ secrets.HOST }} \
+          "docker ps -a --format 'table {{.Names}}\t{{.Status}}\t{{.Ports}}'")
         echo "status<<EOF" >> $GITHUB_OUTPUT
-        echo "$formatted_status" >> $GITHUB_OUTPUT
+        echo "$status" >> $GITHUB_OUTPUT
         echo "EOF" >> $GITHUB_OUTPUT
 
   send_message:
@@ -118,8 +94,6 @@ jobs:
         message: |
           *${{ github.workflow }}*
           Репозиторий: \`${{ github.repository }}\`
-          
           ```
           ${{ needs.deploy.outputs.container_status || 'Не удалось получить статус' }}
           ```
-          
