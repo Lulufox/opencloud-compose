@@ -65,7 +65,7 @@ jobs:
             "
             
             # Удаляем локальный архив
-            rm /tmp/project.tar.gz
+            # rm /tmp/project.tar.gz
 
   deploy:
     runs-on: ubuntu-latest
