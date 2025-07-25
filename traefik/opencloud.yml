@@ -23,8 +23,8 @@ services:
       - "TRAEFIK_LOG_LEVEL=${TRAEFIK_LOG_LEVEL:-ERROR}"
       - "TRAEFIK_ACCESS_LOG=${TRAEFIK_ACCESS_LOG:-false}"
     ports:
-      - "80:80"
-      - "443:443"
+      - "8080:80"
+      - "8443:443"
     volumes:
       - "${DOCKER_SOCKET_PATH:-/var/run/docker.sock}:/var/run/docker.sock:ro"
       - "./config/traefik/docker-entrypoint-override.sh:/opt/traefik/bin/docker-entrypoint-override.sh"
