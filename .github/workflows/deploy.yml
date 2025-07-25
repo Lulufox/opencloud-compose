@@ -35,8 +35,8 @@ jobs:
           set -e
           sudo rm -rf openclou-compose || true
           sudo mkdir -p openclou-compose
-          sudo chown -R 1000:1000 opencloud
-          sudo chmod -R 755 opencloud
+          sudo chown -R 1000:1000 openclou-compose
+          sudo chmod -R 755 openclou-compose
     
     - name: Copy project files
       uses: appleboy/ssh-action@master
