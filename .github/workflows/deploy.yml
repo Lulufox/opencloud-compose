@@ -32,7 +32,7 @@ jobs:
         key: ${{ secrets.SSH_KEY }}
         script: |
           set -e
-          sudo rm -rf openclou-compose || true
+          sudo rm -rf opencloud-compose || true
           sudo mkdir -p openclou-compose
           sudo chown -R ${{ secrets.USER }}:${{ secrets.USER }} openclou-compose
           sudo chmod -R 755 openclou-compose
@@ -44,7 +44,7 @@ jobs:
         username: ${{ secrets.USER }}
         key: ${{ secrets.SSH_KEY }}
         source: "."
-        target: "openclou-compose"
+        target: "opencloud-compose"
         rm: true
 
   deploy:
@@ -62,7 +62,7 @@ jobs:
         key: ${{ secrets.SSH_KEY }}
         script: |
           set -e
-          cd openclou-compose
+          cd opencloud-compose
           docker compose -f docker-compose.yml -f weboffice/collabora.yml -f traefik/opencloud.yml -f traefik/collabora.yml up -d
 
     - name: Get container status
