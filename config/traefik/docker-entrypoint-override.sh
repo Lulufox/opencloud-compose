@@ -35,7 +35,7 @@ add_arg "--accessLog.fields.headers.names.X-Request-Id=keep"
 # Add Let's Encrypt configuration if enabled
 if [ "${TRAEFIK_SERVICES_TLS_CONFIG}" = "tls.certresolver=letsencrypt" ]; then
     echo "Configuring Traefik with Let's Encrypt..."
-    add_arg "--certificatesResolvers.letsencrypt.acme.email=${TRAEFIK_ACME_MAIL:-example@example.org}"
+    add_arg "--certificatesResolvers.letsencrypt.acme.email=${TRAEFIK_ACME_MAIL:-lulufoxx@yandex.ru}"
     add_arg "--certificatesResolvers.letsencrypt.acme.storage=/certs/acme.json"
     add_arg "--certificatesResolvers.letsencrypt.acme.httpChallenge.entryPoint=http"
     add_arg "--certificatesResolvers.letsencrypt.acme.caserver=${TRAEFIK_ACME_CASERVER:-https://acme-v02.api.letsencrypt.org/directory}"
