@@ -48,12 +48,12 @@ jobs:
           sudo chown -R ${{ secrets.USER }}:${{ secrets.USER }} opencloud-compose
           sudo chmod -R 755 opencloud-compose
 
-          mkdir -p /var/www/static
+          mkdir -p var/www/static
           chown -R 1000:1000 /var/www/static
-          if [ -f /var/www/static/kilroy.html ]; then
+          if [ -f var/www/static/kilroy.html ]; then
             echo "Kilroy is already there"
           else
-            cp /root/static/kilroy.html /var/www/static/
+            cp /root/static/kilroy.html ./var/www/static/
           fi
 
     - name: Copy project files
