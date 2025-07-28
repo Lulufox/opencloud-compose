@@ -14,6 +14,15 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Get changed files
+      id: changed-files
+      run: |
+        echo "CHANGED_FILES=$(git diff --name-only HEAD^ HEAD | tr '\n' ' ')" >> $GITHUB_ENV
+        echo "Changed files: ${{ env.CHANGED_FILES }}"
+
     - name: Stop and delete all containers
       uses: appleboy/ssh-action@master
       with:
@@ -39,18 +48,41 @@ jobs:
           sudo chown -R ${{ secrets.USER }}:${{ secrets.USER }} opencloud-compose
           sudo chmod -R 755 opencloud-compose
 
-          sudo rm -rf tmp || true
-          sudo mkdir -p tmp
-          sudo chown -R ${{ secrets.USER }}:${{ secrets.USER }} tmp
-          sudo chmod -R 755 tmp
+    - name: Install rsync on runner
+      run: sudo apt-get update && sudo apt-get install -y rsync
 
-    - name: Copy project files
+    - name: Sync changed files
       shell: bash
       run: |
         set -e
-        sshpass -p "${{ secrets.SSH_PASSWORD }}" scp -v -o StrictHostKeyChecking=no \
-            -r . \
-            ${{ secrets.USER }}@${{ secrets.HOST }}:/${{ secrets.USER }}/opencloud-compose
+        if [ -n "${{ env.CHANGED_FILES }}" ]; then
+          sshpass -p "${{ secrets.SSH_PASSWORD }}" rsync -avz \
+            --progress \
+            --rsh="ssh -o StrictHostKeyChecking=no" \
+            --files-from=<(echo "${{ env.CHANGED_FILES }}" | tr ' ' '\n') \
+            ./ \
+            ${{ secrets.USER }}@${{ secrets.HOST }}:/${{ secrets.USER }}/opencloud-compose/
+        else
+          echo "No files changed, skipping sync"
+        fi
+
+    - name: Create environment file
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USER }}
+        password: ${{ secrets.SSH_PASSWORD }}
+        script: |
+          set -e
+          cd opencloud-compose
+          if [ -f .env.example ]; then
+            cp .env.example .env
+            echo "INITIAL_ADMIN_PASSWORD=${{ secrets.ADMIN_PASSWORD }}" >> .env
+            echo "Environment file created and configured"
+          else
+            echo ".env.example not found, skipping .env creation"
+            exit 1
+          fi
 
   deploy:
     runs-on: ubuntu-latest
