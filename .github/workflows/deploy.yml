@@ -50,7 +50,7 @@ jobs:
         set -e
         sshpass -p "${{ secrets.SSH_PASSWORD }}" scp -v -o StrictHostKeyChecking=no \
             -r . \
-            ${{ secrets.USER }}@${{ secrets.HOST }}:/home/${{ secrets.USER }}/opencloud-compose
+            ${{ secrets.USER }}@${{ secrets.HOST }}:/${{ secrets.USER }}/opencloud-compose
 
   deploy:
     runs-on: ubuntu-latest
