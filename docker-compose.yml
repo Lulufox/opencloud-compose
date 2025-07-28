@@ -10,7 +10,7 @@ services:
       - /var/www/static:/var/www/static:ro
     restart: unless-stopped
     depends_on:
-      opencloud
+      - opencloud
   opencloud:
     image: ${OC_DOCKER_IMAGE:-opencloudeu/opencloud-rolling}:${OC_DOCKER_TAG:-latest}
     # changelog: https://github.com/opencloud-eu/opencloud/tree/main/changelog
