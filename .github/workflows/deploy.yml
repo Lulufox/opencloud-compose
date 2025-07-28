@@ -19,7 +19,7 @@ jobs:
       with:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USER }}
-        key: ${{ secrets.SSH_KEY }}
+        password: ${{ secrets.SSH_PASSWORD }}
         script: |
           set +e
           docker ps -aq | xargs -r docker stop
@@ -31,7 +31,7 @@ jobs:
       with:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USER }}
-        key: ${{ secrets.SSH_KEY }}
+        password: ${{ secrets.SSH_PASSWORD }}
         script: |
           set -e
           sudo rm -rf opencloud-compose || true
@@ -48,12 +48,7 @@ jobs:
       shell: bash
       run: |
         set -e
-        mkdir -p ~/.ssh
-        echo "${{ secrets.SSH_KEY }}" > ~/.ssh/deploy_key
-        chmod 600 ~/.ssh/deploy_key
-        
-        scp -v -o StrictHostKeyChecking=no \
-            -i ~/.ssh/deploy_key \
+        sshpass -p "${{ secrets.SSH_PASSWORD }}" scp -v -o StrictHostKeyChecking=no \
             -r . \
             ${{ secrets.USER }}@${{ secrets.HOST }}:/home/${{ secrets.USER }}/opencloud-compose
 
@@ -69,7 +64,7 @@ jobs:
       with:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USER }}
-        key: ${{ secrets.SSH_KEY }}
+        password: ${{ secrets.SSH_PASSWORD }}
         script: |
           set -e
           cd opencloud-compose
@@ -80,11 +75,7 @@ jobs:
       id: get_status
       run: |
         sleep 15
-        mkdir -p ~/.ssh
-        echo "${{ secrets.SSH_KEY }}" | tr -d '\r' > ~/.ssh/deploy_key
-        chmod 600 ~/.ssh/deploy_key
-        status=$(ssh -o StrictHostKeyChecking=no \
-          -i ~/.ssh/deploy_key \
+        status=$(sshpass -p "${{ secrets.SSH_PASSWORD }}" ssh -o StrictHostKeyChecking=no \
           ${{ secrets.USER }}@${{ secrets.HOST }} \
           "docker ps -a --format 'table {{.Names}}\t{{.Status}}\t{{.Ports}}'")
         echo "status<<EOF" >> $GITHUB_OUTPUT
