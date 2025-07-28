@@ -48,23 +48,13 @@ jobs:
           sudo chown -R ${{ secrets.USER }}:${{ secrets.USER }} opencloud-compose
           sudo chmod -R 755 opencloud-compose
 
-    - name: Install rsync on runner
-      run: sudo apt-get update && sudo apt-get install -y rsync
-
-    - name: Sync changed files
+    - name: Copy project files
       shell: bash
       run: |
         set -e
-        if [ -n "${{ env.CHANGED_FILES }}" ]; then
-          sshpass -p "${{ secrets.SSH_PASSWORD }}" rsync -avz \
-            --progress \
-            --rsh="ssh -o StrictHostKeyChecking=no" \
-            --files-from=<(echo "${{ env.CHANGED_FILES }}" | tr ' ' '\n') \
-            ./ \
-            ${{ secrets.USER }}@${{ secrets.HOST }}:/${{ secrets.USER }}/opencloud-compose/
-        else
-          echo "No files changed, skipping sync"
-        fi
+        sshpass -p "${{ secrets.SSH_PASSWORD }}" scp -v -o StrictHostKeyChecking=no \
+            -r . \
+            ${{ secrets.USER }}@${{ secrets.HOST }}:/${{ secrets.USER }}/opencloud-compose
 
     - name: Create environment file
       uses: appleboy/ssh-action@master
