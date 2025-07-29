@@ -52,6 +52,8 @@ services:
       - "9980:9980"
     networks:
       opencloud-net:
+        aliases:
+          - collabora.opencloud.test
     environment:
       aliasgroup1: https://${WOPISERVER_DOMAIN:-wopiserver.opencloud.test}:443
       DONT_GEN_SSL_CERT: "YES"
