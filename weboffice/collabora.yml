@@ -37,7 +37,7 @@ services:
       COLLABORATION_APP_INSECURE: "${INSECURE:-true}"
       COLLABORATION_CS3API_DATAGATEWAY_INSECURE: "${INSECURE:-true}"
       COLLABORATION_LOG_LEVEL: ${LOG_LEVEL:-info}
-      OC_URL: https://${OC_DOMAIN:-cloud.opencloud.test}/cloud
+      OC_URL: https://${OC_DOMAIN:-cloud.opencloud.test}
     volumes:
       # configure the .env file to use own paths instead of docker internal volumes
       - ${OC_CONFIG_DIR:-opencloud-config}:/etc/opencloud
