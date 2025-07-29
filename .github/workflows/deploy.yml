@@ -107,7 +107,7 @@ jobs:
         sleep 15
         status=$(sshpass -p "${{ secrets.SSH_PASSWORD }}" ssh -o StrictHostKeyChecking=no \
           ${{ secrets.USER }}@${{ secrets.HOST }} \
-          "docker ps -a --format 'table {{.Names}}\t{{.Status}}\t{{.Ports}}'")
+          "docker ps -a --format 'table {{.Names}}\t{{.Status}}'")
         echo "status<<EOF" >> $GITHUB_OUTPUT
         echo "$status" >> $GITHUB_OUTPUT
         echo "EOF" >> $GITHUB_OUTPUT
