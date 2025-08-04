@@ -68,10 +68,10 @@ services:
       OC_PASSWORD_POLICY_MIN_UPPERCASE_CHARACTERS: "${OC_PASSWORD_POLICY_MIN_UPPERCASE_CHARACTERS:-1}"
       OC_PASSWORD_POLICY_MIN_DIGITS: "${OC_PASSWORD_POLICY_MIN_DIGITS:-1}"
       OC_PASSWORD_POLICY_MIN_SPECIAL_CHARACTERS: "${OC_PASSWORD_POLICY_MIN_SPECIAL_CHARACTERS:-1}"
-      OC_OIDC_ENABLED: "true"
-      OC_OIDC_PROVIDER_URL: "https://iliadacloud.ru/keycloak/realms/opencloud"
-      OC_OIDC_CLIENT_ID: "web"
-      # OC_OIDC_CLIENT_SECRET: "${KEYCLOAK_CLIENT_SECRET}"  # Задайте в .env
+      # OC_OIDC_ENABLED: "true"
+      # OC_OIDC_PROVIDER_URL: "https://iliadacloud.ru/keycloak/realms/opencloud"
+      # OC_OIDC_CLIENT_ID: "web"
+      # # OC_OIDC_CLIENT_SECRET: "${KEYCLOAK_CLIENT_SECRET}"  # Задайте в .env
     volumes:
       - ./config/opencloud/csp.yaml:/etc/opencloud/csp.yaml
       - ./config/opencloud/banned-password-list.txt:/etc/opencloud/banned-password-list.txt
