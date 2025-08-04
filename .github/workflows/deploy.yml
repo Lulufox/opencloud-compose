@@ -76,10 +76,12 @@ jobs:
           if [ -f .env.example ]; then
             cp .env.example .env
             echo "OC_DOMAIN=${{ secrets.HOST }}" >> .env
+            echo "COLLABORA_DOMAIN=${{ secrets.HOST }}" >> .env
             echo "INITIAL_ADMIN_PASSWORD=${{ secrets.ADMIN_PASSWORD }}" >> .env
             echo "TRAEFIK_DASHBOARD=true" >> .env
             echo "KEYCLOAK_ADMIN_PASSWORD=${{ secrets.KEYCLOAK_ADMIN_PASSWORD }}" >> .env
             echo "KEYCLOAK_DOMAIN=${{ secrets.HOST }}" >> .env
+            echo "COMPANION_DOMAIN=${{ secrets.HOST }}" >> .env
             echo "Environment file created and configured"
           else
             echo ".env.example not found, skipping .env creation"
