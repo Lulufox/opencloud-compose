@@ -7,7 +7,7 @@ services:
       - "443:443"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - /var/www/static:/var/www/static:ro
+      - /var/www:/var/www:ro
       - /etc/nginx:/etc/nginx:ro
       - /etc/ssl/certs/nginx-selfsigned.crt:/etc/ssl/certs/nginx-selfsigned.crt:ro
       - /etc/ssl/private/nginx-selfsigned.key:/etc/ssl/private/nginx-selfsigned.key:ro
@@ -31,7 +31,7 @@ services:
     environment:
       # enable services that are not started automatically
       OC_ADD_RUN_SERVICES: ${START_ADDITIONAL_SERVICES}
-      OC_URL: https://${OC_DOMAIN:-cloud.opencloud.test}
+      OC_URL: https://${OC_DOMAIN:-cloud.opencloud.test}/cloud
       OC_LOG_LEVEL: ${LOG_LEVEL:-info}
       OC_LOG_COLOR: "${LOG_PRETTY:-false}"
       OC_LOG_PRETTY: "${LOG_PRETTY:-false}"
