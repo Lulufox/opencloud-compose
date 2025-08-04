@@ -1,5 +1,15 @@
 # OpenCloud Compose
 
+## Tips
+
+Start with:
+```
+docker compose \
+   -f docker-compose.yml -f weboffice/collabora.yml \
+   -f traefik/opencloud.yml -f traefik/collabora.yml \
+   -f idm/ldap-keycloak.yml up -d
+```
+
 This repository provides Docker Compose configurations for deploying OpenCloud in various environments.
 
 ## Overview

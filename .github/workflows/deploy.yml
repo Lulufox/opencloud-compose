@@ -78,6 +78,7 @@ jobs:
             echo "INITIAL_ADMIN_PASSWORD=${{ secrets.ADMIN_PASSWORD }}" >> .env
             echo "TRAEFIK_DASHBOARD=true" >> .env
             echo "KEYCLOAK_ADMIN_PASSWORD=${{ secrets.KEYCLOAK_ADMIN_PASSWORD }}" >> .env
+            echo "KEYCLOAK_DOMAIN=${{ secrets.HOST }}/keycloak" >> .env
             echo "Environment file created and configured"
           else
             echo ".env.example not found, skipping .env creation"
@@ -101,7 +102,7 @@ jobs:
           set -e
           cd opencloud-compose
           docker compose -f docker-compose.yml -f weboffice/collabora.yml \
-            -f traefik/opencloud.yml -f traefik/collabora.yml up -d
+            -f traefik/opencloud.yml -f traefik/collabora.yml -f idm/ldap-keycloak.yml up -d
 
     - name: Get container status
       id: get_status

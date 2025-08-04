@@ -82,34 +82,10 @@ services:
     logging:
       driver: ${LOG_DRIVER:-local}
     restart: always
-  
-  keycloak:
-    image: quay.io/keycloak/keycloak:22.0.0
-    container_name: keycloak
-    restart: unless-stopped
-    environment:
-      KEYCLOAK_ADMIN: admin
-      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}  # Задайте в .env
-      KC_HOSTNAME: iliadacloud.ru 
-      KC_PROXY: edge  # Для работы за обратным прокси (Nginx)
-      KC_HTTP_ENABLED: "true"
-    volumes:
-      - keycloak_data:/opt/keycloak/data
-    networks:
-      - opencloud-net
-    ports:
-      - "8090:8080"
-      - "8444:8443"
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
-      interval: 10s
-      timeout: 5s
-      retries: 3
 
 volumes:
   opencloud-config:
   opencloud-data:
-  keycloak_data:
 
 networks:
   opencloud-net:
