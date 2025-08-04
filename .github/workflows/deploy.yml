@@ -76,6 +76,8 @@ jobs:
           if [ -f .env.example ]; then
             cp .env.example .env
             echo "INITIAL_ADMIN_PASSWORD=${{ secrets.ADMIN_PASSWORD }}" >> .env
+            echo "TRAEFIK_DASHBOARD=true" >> .env
+            echo "OC_DOMAIN=${{ secrets.HOST }}/cloud" >> .env
             echo "Environment file created and configured"
           else
             echo ".env.example not found, skipping .env creation"
