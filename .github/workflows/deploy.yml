@@ -77,7 +77,7 @@ jobs:
             cp .env.example .env
             echo "INITIAL_ADMIN_PASSWORD=${{ secrets.ADMIN_PASSWORD }}" >> .env
             echo "TRAEFIK_DASHBOARD=true" >> .env
-            echo "OC_DOMAIN=${{ secrets.HOST }}/cloud" >> .env
+            echo "KEYCLOAK_ADMIN_PASSWORD=${{ secrets.KEYCLOAK_ADMIN_PASSWORD }}" >> .env
             echo "Environment file created and configured"
           else
             echo ".env.example not found, skipping .env creation"
