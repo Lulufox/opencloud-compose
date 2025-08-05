@@ -74,14 +74,43 @@ jobs:
         password: ${{ secrets.SSH_PASSWORD }}
         script: |
           set -e
-          sudo certbot certonly --webroot \
-            -w /var/www/certbot \
-            -d cloud.${{ secrets.HOST }} \
-            -d collabora.${{ secrets.HOST }} \
-            -d wopiserver.${{ secrets.HOST }} \
-            --email ${{ secrets.EMAIL }} \
-            --agree-tos \
-            --no-eff-email
+          # Проверяем существование и срок действия сертификатов
+          need_certbot=false
+          domains=("cloud.${{ secrets.HOST }}" "collabora.${{ secrets.HOST }}" "wopiserver.${{ secrets.HOST }}")
+          
+          for domain in "${domains[@]}"; do
+            cert_path="/etc/letsencrypt/live/$domain/fullchain.pem"
+            if [ ! -f "$cert_path" ]; then
+              echo "Certificate for $domain is missing."
+              need_certbot=true
+            else
+              expiry_date=$(sudo openssl x509 -enddate -noout -in "$cert_path" | cut -d= -f2)
+              expiry_epoch=$(date -d "$expiry_date" +%s)
+              now_epoch=$(date +%s)
+              days_left=$(( (expiry_epoch - now_epoch) / 86400 ))
+              
+              if [ "$days_left" -lt 7 ]; then
+                echo "Certificate for $domain expires in $days_left days (on $expiry_date)."
+                need_certbot=true
+              else
+                echo "Certificate for $domain is valid (expires on $expiry_date)."
+              fi
+            fi
+          done
+          
+          if [ "$need_certbot" = true ]; then
+            echo "Running certbot to obtain/renew certificates..."
+            sudo certbot certonly --webroot \
+              -w /var/www/certbot \
+              -d cloud.${{ secrets.HOST }} \
+              -d collabora.${{ secrets.HOST }} \
+              -d wopiserver.${{ secrets.HOST }} \
+              --email ${{ secrets.EMAIL }} \
+              --agree-tos \
+              --no-eff-email
+          else
+            echo "All certificates are valid, skipping certbot."
+          fi
 
     - name: Create projects directories
       uses: appleboy/ssh-action@master
