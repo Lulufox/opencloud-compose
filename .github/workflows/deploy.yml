@@ -58,7 +58,7 @@ jobs:
             -d cloud.${{ secrets.HOST }} \
             -d collabora.${{ secrets.HOST }} \
             -d wopiserver.${{ secrets.HOST }} \
-            --email ${{ TRAEFIK_ACME_MAIL }} \
+            --email ${{ secrets.TRAEFIK_ACME_MAIL }} \
             --agree-tos \
             --no-eff-email
 
