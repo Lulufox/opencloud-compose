@@ -51,20 +51,20 @@ jobs:
           set -e
           sudo mkdir -p /etc/nginx/sites-available
           echo 'server {
-            listen 80;
-            server_name cloud.${{ secrets.HOST }} collabora.${{ secrets.HOST }} wopiserver.${{ secrets.HOST }};
-            
-            location /.well-known/acme-challenge/ {
-                root /var/www/certbot;
-                try_files $uri =404;
-            }
-            
-            location / {
-                return 301 https://$host$request_uri;
-            }
-          }' | sudo tee /etc/nginx/sites-available/certbot-challenge >/dev/null
-      sudo ln -sf /etc/nginx/sites-available/certbot-challenge /etc/nginx/sites-enabled/
-      sudo nginx -t && sudo systemctl restart nginx
+              listen 80;
+              server_name cloud.${{ secrets.HOST }} collabora.${{ secrets.HOST }} wopiserver.${{ secrets.HOST }};
+              
+              location /.well-known/acme-challenge/ {
+                  root /var/www/certbot;
+                  try_files $uri =404;
+              }
+              
+              location / {
+                  return 301 https://$host$request_uri;
+              }
+            }' | sudo tee /etc/nginx/sites-available/certbot-challenge >/dev/null
+          sudo ln -sf /etc/nginx/sites-available/certbot-challenge /etc/nginx/sites-enabled/
+          sudo nginx -t && sudo systemctl restart nginx
 
     - name: Obtain SSL Certificates
       uses: appleboy/ssh-action@master
