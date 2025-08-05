@@ -27,6 +27,7 @@ jobs:
           set +e
           docker ps -aq | xargs -r docker stop
           docker ps -aq | xargs -r docker rm
+          sudo systemctl stop nginx
           set -e
 
     - name: Create projects directories
