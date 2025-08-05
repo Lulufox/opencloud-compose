@@ -17,7 +17,7 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Stop and delete all containers
+    - name: Stop and delete all containers, stop nginx
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.HOST }}
@@ -27,7 +27,61 @@ jobs:
           set +e
           docker ps -aq | xargs -r docker stop
           docker ps -aq | xargs -r docker rm
+          sudo systemctl stop nginx
           set -e
+    
+    - name: Create a Webroot Directory for Certbot
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USER }}
+        password: ${{ secrets.SSH_PASSWORD }}
+        script: |
+          set -e
+          sudo mkdir -p /var/www/certbot
+          sudo chown -R www-data:www-data /var/www/certbot
+    
+    - name: Temporary Nginx Config for HTTP Challenge
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USER }}
+        password: ${{ secrets.SSH_PASSWORD }}
+        script: |
+          set -e
+          sudo mkdir -p /etc/nginx/sites-available
+          echo 'server {
+            listen 80;
+            server_name cloud.${{ secrets.HOST }} collabora.${{ secrets.HOST }} wopiserver.${{ secrets.HOST }};
+            
+            location /.well-known/acme-challenge/ {
+                root /var/www/certbot;
+                try_files $uri =404;
+            }
+            
+            location / {
+                return 301 https://$host$request_uri;
+            }
+          }' | sudo tee /etc/nginx/sites-available/certbot-challenge >/dev/null
+      sudo ln -sf /etc/nginx/sites-available/certbot-challenge /etc/nginx/sites-enabled/
+      sudo nginx -t && sudo systemctl restart nginx
+
+    - name: Obtain SSL Certificates
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USER }}
+        password: ${{ secrets.SSH_PASSWORD }}
+        script: |
+          set -e
+          sudo certbot certonly --webroot \
+            -w /var/www/certbot \
+            -d cloud.${{ secrets.HOST }} \
+            -d collabora.${{ secrets.HOST }} \
+            -d wopiserver.${{ secrets.HOST }} \
+            --email ${{ secrets.EMAIL }} \
+            --agree-tos \
+            --no-eff-email
 
     - name: Create projects directories
       uses: appleboy/ssh-action@master
@@ -104,6 +158,111 @@ jobs:
         echo "status<<EOF" >> $GITHUB_OUTPUT
         echo "$status" >> $GITHUB_OUTPUT
         echo "EOF" >> $GITHUB_OUTPUT
+
+  reverse_proxy_setup:
+    runs-on: ubuntu-latest
+    needs: deploy
+    steps:
+    - name:
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USER }}
+        password: ${{ secrets.SSH_PASSWORD }}
+        script: |
+          set -e
+          sudo rm /etc/nginx/sites-enabled/certbot-challenge
+          sudo bash -c 'cat > /etc/nginx/sites-available/opencloud << EOF
+          # Redirect HTTP to HTTPS
+          server {
+              listen 80;
+              server_name cloud.${{ secrets.HOST }} collabora.${{ secrets.HOST }} wopiserver.${{ secrets.HOST }};
+
+              location /.well-known/acme-challenge/ {
+                  root /var/www/certbot;
+              }
+
+              location / {
+                  return 301 https://\$host\$request_uri;
+              }
+          }
+
+          # OpenCloud
+          server {
+              listen 443 ssl;
+              server_name cloud.${{ secrets.HOST }};
+
+              ssl_certificate /etc/letsencrypt/live/cloud.${{ secrets.HOST }}/fullchain.pem;
+              ssl_certificate_key /etc/letsencrypt/live/cloud.${{ secrets.HOST }}/privkey.pem;
+
+              location / {
+                  proxy_pass http://127.0.0.1:9200;
+                  proxy_set_header Host \$host;
+                  proxy_set_header X-Real-IP \$remote_addr;
+                  proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+                  proxy_set_header X-Forwarded-Proto \$scheme;
+              }
+          }
+
+          # Collabora
+          server {
+              listen 443 ssl;
+              server_name collabora.${{ secrets.HOST }};
+
+              ssl_certificate /etc/letsencrypt/live/cloud.${{ secrets.HOST }}/fullchain.pem;
+              ssl_certificate_key /etc/letsencrypt/live/cloud.${{ secrets.HOST }}/privkey.pem;
+
+              location / {
+                  proxy_pass http://127.0.0.1:9980;
+                  proxy_set_header Host \$host;
+              }
+
+              location ~ ^/cool/(.*)/ws\$ {
+                  proxy_pass http://127.0.0.1:9980;
+                  proxy_set_header Upgrade \$http_upgrade;
+                  proxy_set_header Connection "Upgrade";
+                  proxy_set_header Host \$host;
+              }
+          }
+
+          # WOPI Server
+          server {
+              listen 443 ssl;
+              server_name wopiserver.${{ secrets.HOST }};
+
+              ssl_certificate /etc/letsencrypt/live/cloud.${{ secrets.HOST }}/fullchain.pem;
+              ssl_certificate_key /etc/letsencrypt/live/cloud.${{ secrets.HOST }}/privkey.pem;
+
+              location / {
+                  proxy_pass http://127.0.0.1:9300;
+                  proxy_set_header Host \$host;
+                  proxy_set_header X-Real-IP \$remote_addr;
+                  proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+                  proxy_set_header X-Forwarded-Proto \$scheme;
+              }
+          }
+          EOF'
+
+    - name: Enable and reload nginx
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USER }}
+        password: ${{ secrets.SSH_PASSWORD }}
+        script: |
+          set -e
+          sudo ln -sf /etc/nginx/sites-available/opencloud /etc/nginx/sites-enabled/
+          sudo nginx -t && sudo systemctl restart nginx
+
+    - name: Test Certificate Renewal
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USER }}
+        password: ${{ secrets.SSH_PASSWORD }}
+        script: |
+          set -e
+          sudo certbot renew --dry-run
 
   send_message:
     runs-on: ubuntu-latest
