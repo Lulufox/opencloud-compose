@@ -100,14 +100,34 @@ jobs:
           
           if [ "$need_certbot" = true ]; then
             echo "Running certbot to obtain/renew certificates..."
-            sudo certbot certonly --webroot \
+            # Пытаемся получить сертификаты в неинтерактивном режиме
+            if sudo certbot certonly --non-interactive --webroot \
               -w /var/www/certbot \
               -d cloud.${{ secrets.HOST }} \
               -d collabora.${{ secrets.HOST }} \
               -d wopiserver.${{ secrets.HOST }} \
               --email ${{ secrets.EMAIL }} \
               --agree-tos \
-              --no-eff-email
+              --no-eff-email; then
+              echo "Certificates successfully obtained/renewed."
+            else
+              echo "Certbot failed, checking if certificates exist..."
+              # Проверяем, существуют ли все необходимые сертификаты
+              all_certs_exist=true
+              for domain in "${domains[@]}"; do
+                if [ ! -f "/etc/letsencrypt/live/$domain/fullchain.pem" ]; then
+                  all_certs_exist=false
+                  break
+                fi
+              done
+              
+              if [ "$all_certs_exist" = true ]; then
+                echo "All required certificates exist despite certbot error, continuing..."
+              else
+                echo "ERROR: Some certificates are missing and certbot failed!"
+                exit 1
+              fi
+            fi
           else
             echo "All certificates are valid, skipping certbot."
           fi
