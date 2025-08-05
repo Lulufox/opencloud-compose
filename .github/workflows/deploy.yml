@@ -123,4 +123,5 @@ jobs:
           ```
           ${{ needs.deploy.outputs.container_status || 'Не удалось получить статус' }}
           ```
+          
           🔗 https://cloud.${{ secrets.HOST }}
