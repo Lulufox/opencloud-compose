@@ -2,9 +2,9 @@ name: Deploy - custom-dockerfile
 
 on:
   push:
-    # branches: [ custom-dockerfile ]
+    branches: [ custom-dockerfile ]
   pull_request:
-    # branches: [ custom-dockerfile ]
+    branches: [ custom-dockerfile ]
   workflow_dispatch:
 
 jobs:
