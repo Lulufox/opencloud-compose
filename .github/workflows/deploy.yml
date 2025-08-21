@@ -85,6 +85,15 @@ jobs:
     outputs:
       container_status: ${{ steps.get_status.outputs.status }}
     steps:
+    - name: Login to Docker Hub
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USER }}
+        password: ${{ secrets.SSH_PASSWORD }}
+        script: |
+          echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+
     - name: Deploy containers
       uses: appleboy/ssh-action@master
       with:
