@@ -18,7 +18,7 @@ services:
       opencloud-net:
     depends_on:
       opencloud:
-        condition: service_started
+        condition: service_healthy
       collabora:
         condition: service_healthy
     entrypoint:
@@ -36,6 +36,7 @@ services:
       COLLABORATION_APP_ICON: https://${COLLABORA_DOMAIN:-collabora.opencloud.test}/favicon.ico
       COLLABORATION_APP_INSECURE: "${INSECURE:-true}"
       COLLABORATION_CS3API_DATAGATEWAY_INSECURE: "${INSECURE:-true}"
+      COLLABORATION_CS3API_DATAGATEWAY_ADDR: opencloud:9142
       COLLABORATION_LOG_LEVEL: ${LOG_LEVEL:-info}
       OC_URL: https://${OC_DOMAIN:-cloud.opencloud.test}
       OC_JWT_SECRET: ${OC_JWT_SECRET}
