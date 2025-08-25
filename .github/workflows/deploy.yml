@@ -74,7 +74,7 @@ jobs:
             echo "OC_DOCKER_IMAGE=${{ secrets.DOCKER_IMAGE }}" >> .env
             echo "OC_JWT_SECRET=${{ secrets.OC_JWT_SECRET }}" >> .env
             echo "AUTH_MACHINE_JWT_SECRET=${{ secrets.OC_JWT_SECRET }}" >> .env
-            # echo "COLLABORATION_WOPI_SECRET=${{ secrets.COLLABORATION_WOPI_SECRET }}" >> .env
+            echo "COLLABORATION_WOPI_SECRET=${{ secrets.OC_JWT_SECRET }}" >> .env
             echo "Environment file created and configured"
           else
             echo ".env.example not found, skipping .env creation"
