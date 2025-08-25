@@ -72,8 +72,8 @@ jobs:
             echo "INITIAL_ADMIN_PASSWORD=${{ secrets.ADMIN_PASSWORD }}" >> .env
             echo "TRAEFIK_ACME_MAIL=${{ secrets.TRAEFIK_ACME_MAIL }}" >> .env
             echo "OC_DOCKER_IMAGE=${{ secrets.DOCKER_IMAGE }}" >> .env
-            echo "OC_JWT_SECRET=${{ secrets.OC_JWT_SECRET }}" >> .env
-            echo "COLLABORATION_WOPI_SECRET=${{ secrets.COLLABORATION_WOPI_SECRET }}" >> .env
+            # echo "OC_JWT_SECRET=${{ secrets.OC_JWT_SECRET }}" >> .env
+            # echo "COLLABORATION_WOPI_SECRET=${{ secrets.COLLABORATION_WOPI_SECRET }}" >> .env
             echo "Environment file created and configured"
           else
             echo ".env.example not found, skipping .env creation"
