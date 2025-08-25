@@ -75,6 +75,7 @@ jobs:
             echo "OC_JWT_SECRET=${{ secrets.OC_JWT_SECRET }}" >> .env
             echo "AUTH_MACHINE_JWT_SECRET=${{ secrets.OC_JWT_SECRET }}" >> .env
             echo "COLLABORATION_WOPI_SECRET=${{ secrets.OC_JWT_SECRET }}" >> .env
+            echp "OC_PASSWORD_POLICY_BANNED_PASSWORDS_LIST=idm/banned-password-list.txt"
             echo "Environment file created and configured"
           else
             echo ".env.example not found, skipping .env creation"
