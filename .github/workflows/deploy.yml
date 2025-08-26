@@ -77,6 +77,7 @@ jobs:
             echo "COLLABORATION_WOPI_SECRET=${{ secrets.OC_JWT_SECRET }}" >> .env
             # echo "OC_PASSWORD_POLICY_DISABLED=true" >> .env
             echo "OC_CONFIG_DIR=/root/opencloud-compose/config" >> .env
+            echo "FRONTEND_PASSWORD_POLICY_BANNED_PASSWORDS_LIST=" >> .env
             echo "OC_DATA_DIR=/root/opencloud-compose/data" >> .env
             echo "Environment file created and configured"
           else
