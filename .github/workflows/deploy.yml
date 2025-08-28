@@ -76,13 +76,13 @@ jobs:
             echo "AUTH_MACHINE_JWT_SECRET=${{ secrets.OC_JWT_SECRET }}" >> .env
             echo "COLLABORATION_WOPI_SECRET=${{ secrets.OC_JWT_SECRET }}" >> .env
             echo "OC_PASSWORD_POLICY_DISABLED=true" >> .env
-            echo "OC_CONFIG_DIR=/root/opencloud-compose/config" >> .env
-            echo "OC_DATA_DIR=/root/opencloud-compose/data" >> .env
-            echo "OC_APPS_DIR=/root/opencloud-compose/config/apps" >> .env
+            echo "OC_CONFIG_DIR=./config" >> .env
+            echo "OC_DATA_DIR=./data" >> .env
+            echo "OC_APPS_DIR=./config/apps" >> .env
             echo "OC_URL=https://localhost:9200" >> .env
             echo "OC_REVA_GATEWAY=eu.opencloud.api.gateway" >> .env
             echo "MICRO_REGISTRY_ADDRESS=127.0.0.1:9233" >> .env
-            echo "PROXY_CSP_CONFIG_FILE_LOCATION=/root/opencloud-compose/config/opencloud" >> .env
+            echo "PROXY_CSP_CONFIG_FILE_LOCATION=./config/opencloud" >> .env
 
             echo "Environment file created and configured"
           else
