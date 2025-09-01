@@ -53,7 +53,7 @@ jobs:
             -r . \
             ${{ secrets.USER }}@${{ secrets.HOST }}:/${{ secrets.USER }}/opencloud-compose
 
-    - name: Create web-ui-config.json
+    - name: Copy web-ui-config.json from tmp directory
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.HOST }}
@@ -61,7 +61,16 @@ jobs:
         password: ${{ secrets.SSH_PASSWORD }}
         script: |
           set -e
-          echo "${{ secrets.WEB_UI_CONFIG }}" > opencloud-compose/config/web-ui-config.json
+          # Копируем конфиг из временной директории
+          cp ~/tmp/web-ui-config.json opencloud-compose/config/web-ui-config.json
+          # Устанавливаем правильные права
+          chown 1000:1000 opencloud-compose/config/web-ui-config.json
+          chmod 644 opencloud-compose/config/web-ui-config.json
+          echo "Web UI config copied successfully"
+          # Проверяем, что файл скопировался
+          ls -la opencloud-compose/config/
+          echo "File content preview:"
+          head -n 5 opencloud-compose/config/web-ui-config.json
 
     - name: Create environment file
       uses: appleboy/ssh-action@master
