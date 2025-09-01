@@ -54,10 +54,14 @@ jobs:
             ${{ secrets.USER }}@${{ secrets.HOST }}:/${{ secrets.USER }}/opencloud-compose
 
     - name: Create web-ui-config.json
-      shell: bash
-      run: |
-        set -e
-        echo "${{ secrets.WEB_UI_CONFIG }}" > opencloud-compose/config/web-ui-config.json
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USER }}
+        password: ${{ secrets.SSH_PASSWORD }}
+        script: |
+          set -e
+          echo "${{ secrets.WEB_UI_CONFIG }}" > opencloud-compose/config/web-ui-config.json
 
     - name: Create environment file
       uses: appleboy/ssh-action@master
