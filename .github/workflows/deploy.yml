@@ -53,6 +53,12 @@ jobs:
             -r . \
             ${{ secrets.USER }}@${{ secrets.HOST }}:/${{ secrets.USER }}/opencloud-compose
 
+    - name: Create web-ui-config.json
+      shell: bash
+      run: |
+        set -e
+        echo "${{ secrets.WEB_UI_CONFIG }}" > opencloud-compose/config/web-ui-config.json
+
     - name: Create environment file
       uses: appleboy/ssh-action@master
       with:
@@ -83,6 +89,7 @@ jobs:
             echo "OC_REVA_GATEWAY=eu.opencloud.api.gateway" >> .env
             echo "MICRO_REGISTRY_ADDRESS=127.0.0.1:9233" >> .env
             echo "PROXY_CSP_CONFIG_FILE_LOCATION=./config/opencloud" >> .env
+            echo "WEB_UI_CONFIG_FILE=./config/opencloud/web-ui-config.json" >> .env
 
             echo "Environment file created and configured"
           else
