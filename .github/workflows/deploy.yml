@@ -102,7 +102,6 @@ jobs:
             echo "OC_REVA_GATEWAY=eu.opencloud.api.gateway" >> .env
             echo "MICRO_REGISTRY_ADDRESS=127.0.0.1:9233" >> .env
             echo "PROXY_CSP_CONFIG_FILE_LOCATION=./config/opencloud" >> .env
-            echo "WEB_UI_CONFIG_FILE=./config/opencloud/web-ui-config.json" >> .env
 
             echo "Environment file created and configured"
           else
