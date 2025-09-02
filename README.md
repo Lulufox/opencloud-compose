@@ -1,4 +1,5 @@
 [![Deploy](https://github.com/Lulufox/opencloud-compose/actions/workflows/deploy.yml/badge.svg)](https://github.com/Lulufox/opencloud-compose/actions/workflows/deploy.yml)
+
 # OpenCloud Compose
 
 This repository provides Docker Compose configurations for deploying OpenCloud in various environments.
