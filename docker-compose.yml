@@ -52,6 +52,8 @@ services:
       OC_PASSWORD_POLICY_MIN_DIGITS: "${OC_PASSWORD_POLICY_MIN_DIGITS:-1}"
       OC_PASSWORD_POLICY_MIN_SPECIAL_CHARACTERS: "${OC_PASSWORD_POLICY_MIN_SPECIAL_CHARACTERS:-1}"
       WEB_UI_CONFIG_FILE: ${WEB_UI_CONFIG_FILE:-./config/opencloud/web-ui-config.json}
+      WEB_ASSET_THEMES_PATH: /home/chaser/.opencloud/web/assets/themes
+      WEB_UI_THEME_PATH: /themes/rshb/theme.json
     volumes:
       - ./config/opencloud/csp.yaml:/etc/opencloud/csp.yaml
       - ./config/opencloud/banned-password-list.txt:/etc/opencloud/banned-password-list.txt
