@@ -62,15 +62,15 @@ jobs:
         script: |
           set -e
           # Копируем конфиг из временной директории
-          cp ~/tmp/web-ui-config.json opencloud-compose/config/web-ui-config.json
+          cp ~/tmp/web-ui-config.json opencloud-compose/config/opencloud/web-ui-config.json
           # Устанавливаем правильные права
-          chown 1000:1000 opencloud-compose/config/web-ui-config.json
-          chmod 644 opencloud-compose/config/web-ui-config.json
+          chown 1000:1000 opencloud-compose/config/opencloud
+          chmod 644 opencloud-compose/config/opencloud
           echo "Web UI config copied successfully"
           # Проверяем, что файл скопировался
-          ls -la opencloud-compose/config/
+          ls -la opencloud-compose/config/opencloud/
           echo "File content preview:"
-          head -n 5 opencloud-compose/config/web-ui-config.json
+          head -n 5 opencloud-compose/config/opencloud/web-ui-config.json
 
     - name: Create environment file
       uses: appleboy/ssh-action@master
@@ -94,14 +94,14 @@ jobs:
             echo "OC_JWT_SECRET=${{ secrets.OC_JWT_SECRET }}" >> .env
             echo "AUTH_MACHINE_JWT_SECRET=${{ secrets.OC_JWT_SECRET }}" >> .env
             echo "COLLABORATION_WOPI_SECRET=${{ secrets.OC_JWT_SECRET }}" >> .env
-            echo "OC_PASSWORD_POLICY_DISABLED=true" >> .env
-            echo "OC_CONFIG_DIR=./config" >> .env
-            echo "OC_DATA_DIR=./data" >> .env
-            echo "OC_APPS_DIR=./config/apps" >> .env
-            echo "OC_URL=https://localhost:9200" >> .env
-            echo "OC_REVA_GATEWAY=eu.opencloud.api.gateway" >> .env
-            echo "MICRO_REGISTRY_ADDRESS=127.0.0.1:9233" >> .env
-            echo "PROXY_CSP_CONFIG_FILE_LOCATION=./config/opencloud" >> .env
+            # echo "OC_PASSWORD_POLICY_DISABLED=true" >> .env
+            # echo "OC_CONFIG_DIR=./config" >> .env
+            # echo "OC_DATA_DIR=./data" >> .env
+            # echo "OC_APPS_DIR=./config/apps" >> .env
+            # echo "OC_URL=https://localhost:9200" >> .env
+            # echo "OC_REVA_GATEWAY=eu.opencloud.api.gateway" >> .env
+            # echo "MICRO_REGISTRY_ADDRESS=127.0.0.1:9233" >> .env
+            # echo "PROXY_CSP_CONFIG_FILE_LOCATION=./config/opencloud" >> .env
 
             echo "Environment file created and configured"
           else
