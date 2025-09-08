@@ -94,7 +94,7 @@ jobs:
             echo "OC_JWT_SECRET=${{ secrets.OC_JWT_SECRET }}" >> .env
             echo "AUTH_MACHINE_JWT_SECRET=${{ secrets.OC_JWT_SECRET }}" >> .env
             echo "COLLABORATION_WOPI_SECRET=${{ secrets.OC_JWT_SECRET }}" >> .env
-            # echo "OC_PASSWORD_POLICY_DISABLED=true" >> .env
+            echo "OC_PASSWORD_POLICY_DISABLED=true" >> .env
             # echo "OC_CONFIG_DIR=./config" >> .env
             # echo "OC_DATA_DIR=./data" >> .env
             # echo "OC_APPS_DIR=./config/apps" >> .env
