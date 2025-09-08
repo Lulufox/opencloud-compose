@@ -51,7 +51,6 @@ services:
       OC_PASSWORD_POLICY_MIN_UPPERCASE_CHARACTERS: "${OC_PASSWORD_POLICY_MIN_UPPERCASE_CHARACTERS:-1}"
       OC_PASSWORD_POLICY_MIN_DIGITS: "${OC_PASSWORD_POLICY_MIN_DIGITS:-1}"
       OC_PASSWORD_POLICY_MIN_SPECIAL_CHARACTERS: "${OC_PASSWORD_POLICY_MIN_SPECIAL_CHARACTERS:-1}"
-      WEB_UI_CONFIG_FILE: ${WEB_UI_CONFIG_FILE:-./config/opencloud/web-ui-config.json}
       # non vanilla configs
       WEB_UI_CONFIG_FILE: /etc/opencloud/web-ui-config.json
       SETTINGS_BUNDLES_PATH: /etc/opencloud/roles.json
