@@ -98,10 +98,10 @@ jobs:
             # echo "OC_CONFIG_DIR=./config" >> .env
             # echo "OC_DATA_DIR=./data" >> .env
             # echo "OC_APPS_DIR=./config/apps" >> .env
-            # echo "OC_URL=https://localhost:9200" >> .env
-            # echo "OC_REVA_GATEWAY=eu.opencloud.api.gateway" >> .env
-            # echo "MICRO_REGISTRY_ADDRESS=127.0.0.1:9233" >> .env
-            # echo "PROXY_CSP_CONFIG_FILE_LOCATION=./config/opencloud" >> .env
+            echo "OC_URL=https://localhost:9200" >> .env
+            echo "OC_REVA_GATEWAY=eu.opencloud.api.gateway" >> .env
+            echo "MICRO_REGISTRY_ADDRESS=127.0.0.1:9233" >> .env
+            echo "PROXY_CSP_CONFIG_FILE_LOCATION=./config/opencloud" >> .env
 
             echo "Environment file created and configured"
           else
