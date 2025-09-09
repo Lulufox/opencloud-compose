@@ -80,27 +80,34 @@ jobs:
         password: ${{ secrets.SSH_PASSWORD }}
         script: |
           set -e
+          # Проверяем существование исходных файлов
+          echo "Checking source files:"
+          ls -la ~/tmp/themes/rshb/
+          ls -la ~/tmp/themes/rshb/assets/
+          
           # Создаем структуру директорий для темы
           sudo mkdir -p opencloud-compose/config/opencloud/themes/rshb
           sudo chown -R 1000:1000 opencloud-compose/config/opencloud/themes
           sudo chmod -R 755 opencloud-compose/config/opencloud/themes
           
-          # Копируем файл theme.json
-          cp ~/tmp/themes/rshb/theme.json opencloud-compose/config/opencloud/themes/rshb/
+          # Копируем файл theme.json (убеждаемся, что это файл, а не директория)
+          cp ~/tmp/themes/rshb/theme.json opencloud-compose/config/opencloud/themes/rshb/theme.json
           
           # Копируем папку assets со всем содержимым
           cp -r ~/tmp/themes/rshb/assets opencloud-compose/config/opencloud/themes/rshb/
           
           # Устанавливаем правильные права на скопированные файлы
           sudo chown -R 1000:1000 opencloud-compose/config/opencloud/themes/rshb
-          sudo chmod -R 644 opencloud-compose/config/opencloud/themes/rshb/*
-          sudo chmod -R 755 opencloud-compose/config/opencloud/themes/rshb/assets
+          sudo find opencloud-compose/config/opencloud/themes/rshb -type f -exec chmod 644 {} \;
+          sudo find opencloud-compose/config/opencloud/themes/rshb -type d -exec chmod 755 {} \;
           
           echo "Theme directory created successfully"
           echo "Contents of theme directory:"
           ls -la opencloud-compose/config/opencloud/themes/rshb/
           echo "Contents of assets directory:"
           ls -la opencloud-compose/config/opencloud/themes/rshb/assets/
+          echo "Checking theme.json is a file:"
+          file opencloud-compose/config/opencloud/themes/rshb/theme.json
 
     - name: Create environment file
       uses: appleboy/ssh-action@master
