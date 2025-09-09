@@ -83,6 +83,7 @@ jobs:
           cd opencloud-compose
           if [ -f .env.example ]; then
             cp .env.example .env
+            echo "## Added params" >> .env
             echo "OC_DOMAIN=cloud.${{ secrets.HOST }}" >> .env
             echo "TRAEFIK_DOMAIN=traefik.${{ secrets.HOST }}" >> .env
             echo "COLLABORA_DOMAIN=collabora.${{ secrets.HOST }}" >> .env
