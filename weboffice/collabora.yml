@@ -38,7 +38,7 @@ services:
       COLLABORATION_CS3API_DATAGATEWAY_INSECURE: "${INSECURE:-true}"
       COLLABORATION_CS3API_DATAGATEWAY_ADDR: opencloud:9142
       COLLABORATION_LOG_LEVEL: ${LOG_LEVEL:-info}
-      OC_URL: https://${OC_DOMAIN:-cloud.opencloud.test}
+      OC_URL: https://${OC_DOMAIN}
       OC_JWT_SECRET: ${OC_JWT_SECRET}
       COLLABORATION_WOPI_SECRET: ${COLLABORATION_WOPI_SECRET}
     volumes:
@@ -61,7 +61,7 @@ services:
         --o:ssl.ssl_verification=${COLLABORA_SSL_VERIFICATION:-true} \
         --o:ssl.termination=true \
         --o:welcome.enable=false \
-        --o:net.frame_ancestors=${OC_DOMAIN:-cloud.opencloud.test}
+        --o:net.frame_ancestors=${OC_DOMAIN}
       username: ${COLLABORA_ADMIN_USER:-admin}
       password: ${COLLABORA_ADMIN_PASSWORD:-admin}
     cap_add:

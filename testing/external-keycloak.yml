@@ -25,7 +25,7 @@ services:
       - "./config/keycloak/opencloud-realm-autoprovisioning.dist.json:/opt/keycloak/data/import-dist/openCloud-realm.json"
       - "./config/keycloak/themes/opencloud:/opt/keycloak/themes/opencloud"
     environment:
-      OC_DOMAIN: ${OC_DOMAIN:-cloud.opencloud.test}
+      OC_DOMAIN: ${OC_DOMAIN}
       KC_HOSTNAME: ${KEYCLOAK_DOMAIN:-keycloak.opencloud.test}
       KC_DB: postgres
       KC_DB_URL: "jdbc:postgresql://postgres:5432/keycloak"

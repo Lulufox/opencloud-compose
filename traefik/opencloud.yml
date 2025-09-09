@@ -4,7 +4,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.opencloud.entrypoints=https"
-      - "traefik.http.routers.opencloud.rule=Host(`${OC_DOMAIN:-cloud.opencloud.test}`)"
+      - "traefik.http.routers.opencloud.rule=Host(`${OC_DOMAIN}`)"
       - "traefik.http.routers.opencloud.service=opencloud"
       - "traefik.http.services.opencloud.loadbalancer.server.port=9200"
       - "traefik.http.routers.opencloud.${TRAEFIK_SERVICES_TLS_CONFIG}"
@@ -14,7 +14,7 @@ services:
     networks:
       opencloud-net:
         aliases:
-          - ${OC_DOMAIN:-cloud.opencloud.test}
+          - ${OC_DOMAIN}
     entrypoint: [ "/bin/sh", "/opt/traefik/bin/docker-entrypoint-override.sh"]
     environment:
       - "TRAEFIK_SERVICES_TLS_CONFIG=${TRAEFIK_SERVICES_TLS_CONFIG:-tls.certresolver=letsencrypt}"
