@@ -72,6 +72,36 @@ jobs:
           echo "File content preview:"
           head -n 5 opencloud-compose/config/opencloud/web-ui-config.json
 
+    - name: Create theme directory
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USER }}
+        password: ${{ secrets.SSH_PASSWORD }}
+        script: |
+          set -e
+          # Создаем структуру директорий для темы
+          sudo mkdir -p opencloud-compose/config/opencloud/themes/rshb
+          sudo chown -R 1000:1000 opencloud-compose/config/opencloud/themes
+          sudo chmod -R 755 opencloud-compose/config/opencloud/themes
+          
+          # Копируем файл theme.json
+          cp ~/tmp/themes/rshb/theme.json opencloud-compose/config/opencloud/themes/rshb/
+          
+          # Копируем папку assets со всем содержимым
+          cp -r ~/tmp/themes/rshb/assets opencloud-compose/config/opencloud/themes/rshb/
+          
+          # Устанавливаем правильные права на скопированные файлы
+          sudo chown -R 1000:1000 opencloud-compose/config/opencloud/themes/rshb
+          sudo chmod -R 644 opencloud-compose/config/opencloud/themes/rshb/*
+          sudo chmod -R 755 opencloud-compose/config/opencloud/themes/rshb/assets
+          
+          echo "Theme directory created successfully"
+          echo "Contents of theme directory:"
+          ls -la opencloud-compose/config/opencloud/themes/rshb/
+          echo "Contents of assets directory:"
+          ls -la opencloud-compose/config/opencloud/themes/rshb/assets/
+
     - name: Create environment file
       uses: appleboy/ssh-action@master
       with:
