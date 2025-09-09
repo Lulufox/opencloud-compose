@@ -109,6 +109,20 @@ jobs:
           echo "Checking theme.json is a file:"
           file opencloud-compose/config/opencloud/themes/rshb/theme.json
 
+    - name: Copy certs
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USER }}
+        password: ${{ secrets.SSH_PASSWORD }}
+        script: |
+          set -e
+          sudo mkdir -p opencloud-compose/certs
+          sudo chown -R 1000:1000 opencloud-compose/certs
+          sudo chmod -R 755 opencloud-compose/certs
+
+          cp ~/tmp/acme.json opencloud-compose/certs
+
     - name: Create environment file
       uses: appleboy/ssh-action@master
       with:
