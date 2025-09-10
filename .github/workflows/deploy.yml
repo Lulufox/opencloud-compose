@@ -29,6 +29,15 @@ jobs:
           docker ps -aq | xargs -r docker rm
           sudo systemctl stop nginx
           set -e
+    
+    - name: Delete image
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USER }}
+        password: ${{ secrets.SSH_PASSWORD }}
+        script:
+          docker image rm ${{ secrets.DOCKERHUB_USERNAME }}/iliadacloud
 
     - name: Create projects directories
       uses: appleboy/ssh-action@master
