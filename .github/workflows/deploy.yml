@@ -166,6 +166,7 @@ jobs:
             echo "SETTINGS_BUNDLE_PATH=/etc/opencloud/roles.json" >> .env
             echo "WEB_ASSET_THEMES_PATH=./themes" >> .env
             echo "WEB_UI_THEME_PATH=/themes/rshb/theme.json" >> .env
+            echo "OC_DEFAULT_LANGUAGE=ru" >> .env
 
             echo "Environment file created and configured"
           else
