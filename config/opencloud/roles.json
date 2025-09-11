@@ -1,10 +1,10 @@
 [
     {
-        "id": "93276b48-6f36-43fc-b137-84de8cac5fd0",
-        "name": "rshb_admin",
+        "id": "71881883-1768-46bd-a24d-a356a2afdf7f",
+        "name": "admin",
         "type": "TYPE_ROLE",
         "extension": "opencloud-roles",
-        "displayName": "RSHB Admin",
+        "displayName": "Admin",
         "settings": [
             {
                 "id": "8e587774-d929-4215-910b-a317b1e80f73",
