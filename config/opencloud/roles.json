@@ -1,10 +1,35 @@
 [
     {
-        "id": "71881883-1768-46bd-a24d-a356a2afdf7f",
-        "name": "admin",
+        "id": "6d8c1916-b759-4f2e-bd71-2fb307c63e99c",
+        "name": "user-we-dont-like",
         "type": "TYPE_ROLE",
         "extension": "opencloud-roles",
-        "displayName": "Admin",
+        "displayName": "User with one permission only",
+        "settings": [
+            {
+                "id": "7d81f103-0488-4853-bce5-98dcce36d649",
+                "name": "Language.ReadWrite",
+                "displayName": "Permission to read and set the language",
+                "permissionValue": {
+                    "operation": "OPERATION_READWRITE",
+                    "constraint": "CONSTRAINT_OWN"
+                },
+                "resource": {
+                    "type": "TYPE_SETTING",
+                    "id": "aa8cfbe5-95d4-4f7e-a032-c3c01f5f062f"
+                }
+            }
+        ],
+        "resource": {
+            "type": "TYPE_SYSTEM"
+        }
+    },
+    {
+        "id": "1f1bb5d4-5996-4b81-b4dc-118e279e65b0",
+        "name": "user-we-all-like",
+        "type": "TYPE_ROLE",
+        "extension": "opencloud-roles",
+        "displayName": "User with all available permissions",
         "settings": [
             {
                 "id": "8e587774-d929-4215-910b-a317b1e80f73",
@@ -287,69 +312,5 @@
         "resource": {
             "type": "TYPE_SYSTEM"
         }
-    },
-    {
-      "id": "2a506de7-99bd-4f0d-994e-c38e72c28fd9",
-      "name": "user",
-      "type": "TYPE_ROLE",
-      "extension": "opencloud-roles",
-      "displayName": "RSHB User",
-      "settings": [
-        {
-          "id": "4e41363c-a058-40a5-aec8-958897511209",
-          "name": "AutoAcceptShares.ReadWriteDisabled",
-          "displayName": "enable/disable auto accept shares",
-          "permissionValue": {
-            "operation": "OPERATION_READWRITE",
-            "constraint": "CONSTRAINT_OWN"
-          },
-          "resource": {
-            "type": "TYPE_SETTING",
-            "id": "ec3ed4a3-3946-4efc-8f9f-76d38b12d3a9"
-          }
-        },
-        {
-          "id": "069c08b1-e31f-4799-9ed6-194b310e7244",
-          "name": "Shares.Write",
-          "displayName": "Write share",
-          "description": "This permission allows creating shares.",
-          "permissionValue": {
-            "operation": "OPERATION_WRITE",
-            "constraint": "CONSTRAINT_ALL"
-          },
-          "resource": {
-            "type": "TYPE_SHARE"
-          }
-        },
-        {
-          "id": "4ebaa725-bfaa-43c5-9817-78bc9994bde4",
-          "name": "Favorites.List",
-          "displayName": "List Favorites",
-          "description": "This permission allows listing favorites.",
-          "permissionValue": {
-            "operation": "OPERATION_READ",
-            "constraint": "CONSTRAINT_OWN"
-          },
-          "resource": {
-            "type": "TYPE_SYSTEM"
-          }
-        },
-        {
-          "id": "a54778fd-1c45-47f0-892d-655caf5236f2",
-          "name": "Favorites.Write",
-          "displayName": "Write Favorites",
-          "description": "This permission allows marking files as favorites.",
-          "permissionValue": {
-            "operation": "OPERATION_WRITE",
-            "constraint": "CONSTRAINT_OWN"
-          },
-          "resource": {
-            "type": "TYPE_FILE"
-          }
-        }
-      ],
-      "resource": {
-        "type": "TYPE_SYSTEM"
-      }
     }
-  ]
+]
