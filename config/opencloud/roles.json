@@ -289,8 +289,8 @@
         }
     },
     {
-      "id": "b7ad6d1f-94ba-4f05-a289-bce10bb3eb99",
-      "name": "rshb_user",
+      "id": "2a506de7-99bd-4f0d-994e-c38e72c28fd9",
+      "name": "user",
       "type": "TYPE_ROLE",
       "extension": "opencloud-roles",
       "displayName": "RSHB User",
