@@ -289,11 +289,11 @@
         }
     },
     {
-      "id": "7525e45e-e2f2-473f-bc08-324936bb67d3",
+      "id": "2a506de7-99bd-4f0d-994e-c38e72c28fd9",
       "name": "user-rshb",
       "type": "TYPE_ROLE",
       "extension": "opencloud-roles",
-      "displayName": "РСХБянин",
+      "displayName": "РСХБяниRSHB Userн",
       "settings": [
         {
           "id": "4e41363c-a058-40a5-aec8-958897511209",
