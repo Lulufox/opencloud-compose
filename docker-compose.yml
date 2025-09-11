@@ -56,6 +56,7 @@ services:
       SETTINGS_BUNDLES_PATH: /etc/opencloud/roles.json
       # WEB_ASSET_THEMES_PATH: /etc/opencloud/themes/rshb
       WEB_UI_THEME_PATH: /themes/rshb/theme.json
+      OC_DEFAULT_LANGUAGE: ru
     volumes:
       - ./config/opencloud/csp.yaml:/etc/opencloud/csp.yaml
       - ./config/opencloud/banned-password-list.txt:/etc/opencloud/banned-password-list.txt
