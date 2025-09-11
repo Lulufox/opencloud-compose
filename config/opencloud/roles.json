@@ -327,7 +327,7 @@
           "displayName": "Permission to read and set the language",
           "permissionValue": {
             "operation": "OPERATION_READWRITE",
-            "constraint": "CONSTRAINT_ALL"
+            "constraint": "CONSTRAINT_OWN"
           },
           "resource": {
             "type": "TYPE_SETTING",
