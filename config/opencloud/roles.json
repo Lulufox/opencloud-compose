@@ -25,11 +25,11 @@
         }
     },
     {
-        "id": "1f1bb5d4-5996-4b81-b4dc-118e279e65b0",
-        "name": "user-we-all-like",
+        "id": "71881883-1768-46bd-a24d-a356a2afdf7f",
+        "name": "Admin",
         "type": "TYPE_ROLE",
         "extension": "opencloud-roles",
-        "displayName": "User with all available permissions",
+        "displayName": "Admin",
         "settings": [
             {
                 "id": "8e587774-d929-4215-910b-a317b1e80f73",
