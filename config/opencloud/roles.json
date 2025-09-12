@@ -1,5 +1,56 @@
 [
     {
+        "id": "2a506de7-99bd-4f0d-994e-c38e72c28fd9",
+        "name": "opencloudProfile",
+        "type": "TYPE_ACCOUNT",
+        "extension": "opencloud-accounts",
+        "displayName": "Profile",
+        "settings": [
+            {
+                "id": "7d81f103-0488-4853-bce5-98dcce36d649",
+                "name": "Language.ReadWrite",
+                "displayName": "Permission to read and set the language",
+                "permissionValue": {
+                    "operation": "OPERATION_READWRITE",
+                    "constraint": "CONSTRAINT_OWN"
+                },
+                "resource": {
+                    "type": "TYPE_SETTING",
+                    "id": "aa8cfbe5-95d4-4f7e-a032-c3c01f5f062f"
+                }
+            },
+            {
+                "id": "ad5bb5e5-dc13-4cd3-9304-09a424564ea8",
+                "name": "EmailNotifications.ReadWriteDisabled",
+                "displayName": "Disable Email Notifications",
+                "permissionValue": {
+                    "operation": "OPERATION_READWRITE",
+                    "constraint": "CONSTRAINT_OWN"
+                },
+                "resource": {
+                    "type": "TYPE_SETTING",
+                    "id": "33ffb5d6-cd07-4dc0-afb0-84f7559ae438"
+                }
+            },
+            {
+                "id": "4e41363c-a058-40a5-aec8-958897511209",
+                "name": "AutoAcceptShares.ReadWriteDisabled",
+                "displayName": "enable/disable auto accept shares",
+                "permissionValue": {
+                    "operation": "OPERATION_READWRITE",
+                    "constraint": "CONSTRAINT_OWN"
+                },
+                "resource": {
+                    "type": "TYPE_SETTING",
+                    "id": "ec3ed4a3-3946-4efc-8f9f-76d38b12d3a9"
+                }
+            }
+        ],
+        "resource": {
+            "type": "TYPE_SYSTEM"
+        }
+    },
+    {
         "id": "d7beeea8-8ff4-406b-8fb6-ab2dd81e6b11",
         "name": "opencloudUser",
         "type": "TYPE_ROLE",
