@@ -7,19 +7,6 @@
         "displayName": "User",
         "settings": [
             {
-                "id": "7d81f103-0488-4853-bce5-98dcce36d649",
-                "name": "Language.ReadWrite",
-                "displayName": "Permission to read and set the language",
-                "permissionValue": {
-                    "operation": "OPERATION_READWRITE",
-                    "constraint": "CONSTRAINT_OWN"
-                },
-                "resource": {
-                    "type": "TYPE_SETTING",
-                    "id": "aa8cfbe5-95d4-4f7e-a032-c3c01f5f062f"
-                }
-            },
-            {
                 "id": "a54778fd-1c45-47f0-892d-655caf5236f2",
                 "name": "Favorites.Write",
                 "displayName": "Write Favorites",
