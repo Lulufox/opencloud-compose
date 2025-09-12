@@ -4,7 +4,7 @@
         "name": "user-rshb",
         "type": "TYPE_ROLE",
         "extension": "opencloud-roles",
-        "displayName": "РСХБянин",
+        "displayName": "RSHB User",
         "settings": [
             {
                 "id": "4e41363c-a058-40a5-aec8-958897511209",
