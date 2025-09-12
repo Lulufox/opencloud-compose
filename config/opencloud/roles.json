@@ -18,6 +18,32 @@
                     "type": "TYPE_SETTING",
                     "id": "aa8cfbe5-95d4-4f7e-a032-c3c01f5f062f"
                 }
+            },
+            {
+                "id": "a54778fd-1c45-47f0-892d-655caf5236f2",
+                "name": "Favorites.Write",
+                "displayName": "Write Favorites",
+                "description": "This permission allows marking files as favorites.",
+                "permissionValue": {
+                    "operation": "OPERATION_WRITE",
+                    "constraint": "CONSTRAINT_OWN"
+                },
+                "resource": {
+                    "type": "TYPE_FILE"
+                }
+            },
+            {
+                "id": "ad5bb5e5-dc13-4cd3-9304-09a424564ea8",
+                "name": "EmailNotifications.ReadWriteDisabled",
+                "displayName": "Disable Email Notifications",
+                "permissionValue": {
+                    "operation": "OPERATION_READWRITE",
+                    "constraint": "CONSTRAINT_OWN"
+                },
+                "resource": {
+                    "type": "TYPE_SETTING",
+                    "id": "33ffb5d6-cd07-4dc0-afb0-84f7559ae438"
+                }
             }
         ],
         "resource": {
@@ -69,32 +95,6 @@
                 },
                 "resource": {
                     "type": "TYPE_SYSTEM"
-                }
-            },
-            {
-                "id": "11516bbd-7157-49e1-b6ac-d00c820f980b",
-                "name": "PublicLink.Write",
-                "displayName": "Write publiclink",
-                "description": "This permission allows creating public links.",
-                "permissionValue": {
-                    "operation": "OPERATION_WRITE",
-                    "constraint": "CONSTRAINT_ALL"
-                },
-                "resource": {
-                    "type": "TYPE_SHARE"
-                }
-            },
-            {
-                "id": "069c08b1-e31f-4799-9ed6-194b310e7244",
-                "name": "Shares.Write",
-                "displayName": "Write share",
-                "description": "This permission allows creating shares.",
-                "permissionValue": {
-                    "operation": "OPERATION_WRITE",
-                    "constraint": "CONSTRAINT_ALL"
-                },
-                "resource": {
-                    "type": "TYPE_SHARE"
                 }
             },
             {
@@ -174,19 +174,6 @@
                 "resource": {
                     "type": "TYPE_GROUP",
                     "id": "all"
-                }
-            },
-            {
-                "id": "7d81f103-0488-4853-bce5-98dcce36d649",
-                "name": "Language.ReadWrite",
-                "displayName": "Permission to read and set the language",
-                "permissionValue": {
-                    "operation": "OPERATION_READWRITE",
-                    "constraint": "CONSTRAINT_ALL"
-                },
-                "resource": {
-                    "type": "TYPE_SETTING",
-                    "id": "aa8cfbe5-95d4-4f7e-a032-c3c01f5f062f"
                 }
             },
             {
