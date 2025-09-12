@@ -1,7 +1,7 @@
 [
     {
-        "id": "2a506de7-99bd-4f0d-994e-c38e72c28fd9",
-        "name": "user",
+        "id": "d7beeea8-8ff4-406b-8fb6-ab2dd81e6b11",
+        "name": "opencloudUser",
         "type": "TYPE_ROLE",
         "extension": "opencloud-roles",
         "displayName": "User",
@@ -52,7 +52,7 @@
     },
     {
         "id": "71881883-1768-46bd-a24d-a356a2afdf7f",
-        "name": "admin",
+        "name": "opencloudAdmin",
         "type": "TYPE_ROLE",
         "extension": "opencloud-roles",
         "displayName": "Admin",
