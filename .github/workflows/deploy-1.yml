@@ -49,11 +49,11 @@ jobs:
         run: |
           sshpass -e rsync -avz --delete \
             -e "ssh -o StrictHostKeyChecking=no" \
-            ./docker-compose.yml \
-            ./traefik/ \
-            ./config/ \
-            ./themes/ \
-            .env \
+            --exclude='.git' \
+            --exclude='.github' \
+            --exclude='venv' \
+            --exclude='node_modules' \
+            ./ \
             root@${{ secrets.IP }}:/opt/opencloud/
 
       - name: Deploy with docker compose (Traefik + OpenCloud)
