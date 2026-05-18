@@ -40,7 +40,6 @@ jobs:
           WEB_ASSET_THEMES_PATH=/themes
           WEB_UI_THEME_PATH=rshb
           WEB_UI_CONFIG_FILE=/etc/opencloud/opencloud-web.json
-          WEB_OPTION_RUNTIME_APPS='[]'
           EOF
 
       - name: Copy files to server
